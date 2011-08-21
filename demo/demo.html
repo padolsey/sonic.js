@@ -26,13 +26,14 @@ var a = new Sonic({
 	width: 300,
 	height: 300,
 
-	stepsPerFrame: 1,
+	stepsPerFrame: 4,
 	trailLength: 1,
-	pointDistance: .05,
+	pointDistance: .02,
+	step: 'fader',
 
 	setup: function() {
 		this._.lineWidth = 18;
-	},
+	},/*
 	step: function(x, y, progress, color, alpha, xy) {
 
 		var cx = this.padding + 140,
@@ -49,15 +50,15 @@ var a = new Sonic({
 		_.closePath();
 		_.stroke();
 
-	},
+	},*/
 	data: [
-	/*
+	
 		['arc', 50, 50, 50, 90, -90, false],
 		['bezier', 50, 0, 200, 100, 100, 0, 150, 100],
 		['arc', 200, 50, 50, 90, -90, true],
-		['bezier', 200, 0, 50, 100, 150, 0, 100, 100],
-	*/	
-		['arc', 140, 140, 80, 0, 360]
+		['bezier', 200, 0, 50, 100, 150, 0, 100, 100]//,
+		
+		//['arc', 140, 140, 80, 0, 360]
 	]
 });
 
