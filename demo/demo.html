@@ -1,0 +1,74 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Sonic</title>
+
+<style>
+
+body {
+	background: #222;
+}
+canvas {
+	margin: 0 auto;
+	display: block;
+	margin-top: 100px;
+}
+
+</style>
+
+<body>
+
+
+<script src="../src/sonic.js"></script>
+<script>
+
+var a = new Sonic({
+
+	width: 300,
+	height: 300,
+
+	stepsPerFrame: 1,
+	trailLength: 1,
+	pointDistance: .05,
+
+	setup: function() {
+		this._.lineWidth = 18;
+	},
+	step: function(x, y, progress, color, alpha, xy) {
+
+		var cx = this.padding + 140,
+			cy = this.padding + 140,
+			_ = this._,
+			angle = (Math.PI/180) * (progress * 360);
+
+		_.beginPath();
+		_.moveTo(x, y);
+		_.lineTo(
+			(Math.cos(angle) * 130) + cx,
+			(Math.sin(angle) * 130) + cy
+		);
+		_.closePath();
+		_.stroke();
+
+	},
+	data: [
+	/*
+		['arc', 50, 50, 50, 90, -90, false],
+		['bezier', 50, 0, 200, 100, 100, 0, 150, 100],
+		['arc', 200, 50, 50, 90, -90, true],
+		['bezier', 200, 0, 50, 100, 150, 0, 100, 100],
+	*/	
+		['arc', 140, 140, 80, 0, 360]
+	]
+});
+
+a.play();
+
+document.body.onclick = function() {
+	a.speed += 1;
+};
+
+document.body.appendChild(a.canvas);
+
+</script> 
+
+</body>
