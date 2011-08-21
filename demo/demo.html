@@ -65,7 +65,7 @@ var a = new Sonic({
 a.play();
 
 document.body.onclick = function() {
-	a.speed += 1;
+	a.stepsPerFrame += 1;
 };
 
 document.body.appendChild(a.canvas);
