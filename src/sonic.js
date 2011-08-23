@@ -3,29 +3,42 @@
  */
 (function(){
 
+	var emptyFn = function(){};
+
 	function Sonic(d) {
 
 		this.data = d.data;
 		this.imageData = [];
 
 		this.multiplier = d.multiplier || 1;
-		this.padding = d.padding || 10;
+		this.padding = d.padding || 0;
 
-		this.stepsPerFrame = d.stepsPerFrame || 1;
-		this.trailLength = 1, d.trailLength || 1;
+		this.fps = d.fps || 25;
+
+		this.stepsPerFrame = ~~d.stepsPerFrame || 1;
+		this.trailLength = d.trailLength || 1;
 		this.pointDistance = d.pointDistance || .05;
 
-		this.color = d.color || [255,255,255].join(',');
+		this.domClass = d.domClass || 'sonic';
+
+		this.fillColor = d.fillColor || '#FFF';
+		this.strokeColor = d.strokeColor || '#FFF';
 
 		this.stepMethod = typeof d.step == 'string' ?
 			stepMethods[d.step] :
 			d.step || stepMethods.square;
 
-		this._setup = d.setup || function(){};
-		this._teardown = d.teardown || function(){};
+		this._setup = d.setup || emptyFn;
+		this._teardown = d.teardown || emptyFn;
+		this._preStep = d.preStep || emptyFn;
 
 		this.width = d.width;
 		this.height = d.height;
+
+		this.fullWidth = this.width + 2*this.padding;
+		this.fullHeight = this.height + 2*this.padding;
+
+		this.domClass = d.domClass || 'sonic';
 
 		this.setup();
 
@@ -65,11 +78,6 @@
 		},
 		arc: function(t, cx, cy, radius, start, end, anti) {
 
-			if (start < 0) start = Math.PI*2 + start;
-			if (end < 0) end = Math.PI*2 + end;
-
-			if (anti) end -= Math.PI*2;
-
 		    var point = (end - start) * t + start;
 
 		    var ret = [
@@ -93,19 +101,23 @@
 
 	var stepMethods = Sonic.stepMethods = {
 		
-		square: function(x, y, p, color, alpha) {
-			this._.fillRect(x - 3, y - 3, 6, 6);
+		square: function(point, i, f, color, alpha) {
+			this._.fillRect(point.x - 3, point.y - 3, 6, 6);
 		},
 
-		fader: function(x, y, p, color, alpha) {
+		fader: function(point, i, f, color, alpha) {
 
 			this._.beginPath();
-			this._last && this._.moveTo(this._last[0], this._last[1]);
-			this._.lineTo(x, y);
+
+			if (this._last) {
+				this._.moveTo(this._last.x, this._last.y);
+			}
+
+			this._.lineTo(point.x, point.y);
 			this._.closePath();
 			this._.stroke();
 
-			this._last = [x,y];
+			this._last = point;
 
 		}
 
@@ -123,8 +135,10 @@
 			this.canvas = document.createElement('canvas');
 			this._ = this.canvas.getContext('2d');
 
-			this.canvas.height = this.height + 2*this.padding;
-			this.canvas.width = this.width + 2*this.padding;
+			this.canvas.className = this.domClass;
+
+			this.canvas.height = this.fullHeight;
+			this.canvas.width = this.fullWidth;
 
 			this.points = [];
 
@@ -133,11 +147,7 @@
 				args = data[i].slice(1);
 				method = data[i][0];
 
-				if (!(method in argSignatures)) {
-					continue;
-				}
-
-				for (var a = -1, al = args.length; ++a < al;) {
+				if (method in argSignatures) for (var a = -1, al = args.length; ++a < al;) {
 
 					type = argSignatures[method][a];
 					value = args[a];
@@ -168,22 +178,28 @@
 
 					args[0] = t;
 
-					this.points.push(
-						r = pathMethods[method].apply(null, args)
-					);
+					r = pathMethods[method].apply(null, args);
 
-					r.progress = t;
+					this.points.push({
+						x: r[0],
+						y: r[1],
+						progress: t
+					});
 
 				}
 
 			}
 
 			this.frame = 0;
-			this.prep();
+			//this.prep(this.frame);
 
 		},
 
-		prep: function() {
+		prep: function(frame) {
+
+			if (frame in this.imageData) {
+				return;
+			}
 
 			this._.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			
@@ -191,45 +207,50 @@
 				pointsLength = points.length,
 				point, index;
 
-			var alpha,
-				pd = this.pointDistance;
+			var pd = this.pointDistance;
 
 			this._setup();
 
-			for (var i = 0, l = pointsLength*this.trailLength; ++i < l;) {
+			for (var i = -1, l = pointsLength*this.trailLength; ++i < l && !this.stopped;) {
 
-				index = this.frame + i;
+				index = frame + i;
 
 				point = points[index] || points[index - pointsLength];
 
-				alpha = Math.round(1000*(i/l))/1000;
+				if (!point) {
+					console.log('POINT NOT FOUND');
+					continue;
+				}
 
-				this._.fillStyle = ('rgba(' + this.color + ',' + alpha + ')');
-				this._.strokeStyle = ('rgba(' + this.color + ',' + alpha + ')');
+				this.alpha = Math.round(1000*(i/(l-1)))/1000;
 
-				this.stepMethod(point[0], point[1], point.progress, this.color, alpha);
+				this._preStep();
+
+				this._.globalAlpha = this.alpha;
+
+				this._.fillStyle = this.fillColor;
+				this._.strokeStyle = this.strokeColor;
+
+				this.stepMethod(point, i/(l-1), frame/(this.points.length-1), this.color, this.alpha);
 
 			} 
 
 			this._teardown();
 
-			this.imageData[this.frame] = (
+			this.imageData[frame] = (
 				this._.getImageData(0, 0, this.canvas.width, this.canvas.height)
 			);
 
+			return true;
 
 		},
 
 		draw: function() {
-
-			if (!(this.frame in this.imageData)) {
-
-				this.prep();
-
-			} else {
+			
+			if (!this.prep(this.frame)) {
 
 				this._.clearRect(0, 0, this.canvas.width, this.canvas.height);
-				
+
 				this._.putImageData(
 					this.imageData[this.frame],
 					0, 0
@@ -237,21 +258,29 @@
 
 			}
 
+			this.iterateFrame();
+
+		},
+
+		iterateFrame: function() {
+			
 			this.frame += this.stepsPerFrame;
 
-			if (this.frame + 1 >= this.points.length) {
+			if (this.frame >= this.points.length) {
 				this.frame = 0;
 			}
 
 		},
 
 		play: function() {
+			this.stopped = false;
 			var hoc = this;
 			this.timer = setInterval(function(){
 				hoc.draw();
-			}, 30);
+			}, (1000 / this.fps));
 		},
 		stop: function() {
+			this.stopped = true;
 			this.timer && clearInterval(this.timer);
 		}
 	};

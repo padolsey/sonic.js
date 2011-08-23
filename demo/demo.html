@@ -6,69 +6,379 @@
 
 body {
 	background: #222;
-}
-canvas {
-	margin: 0 auto;
-	display: block;
-	margin-top: 100px;
+	color: #FFF;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: .8em;
 }
 
+#container {
+	overflow: hidden;
+	padding: 20px;
+	width: 522px;
+	margin: 0 auto;
+}
+
+#in { 
+	overflow: hidden;
+}
+
+a { color: #FFF; }
+
+div.l {
+	float: left;
+	margin: 20px 20px 0 0;
+	border: 2px solid #666;
+	background: #000;
+	height: 150px;
+	width: 150px;
+	position: relative;
+}
+.sonic {
+	
+}
+canvas { display: block; }
 </style>
 
 <body>
 
+<div id="container">
+
+<h1>&lt;canvas&gt; loaders</h1>
+
+<div id="in"></div>
+
+<p>By <a href="http://padolsey.net">Padolsey</a> | View the source to see the magic!</p>
+
+</div>
 
 <script src="../src/sonic.js"></script>
 <script>
 
-var a = new Sonic({
+var loaders = [
 
-	width: 300,
-	height: 300,
+	{
 
-	stepsPerFrame: 4,
-	trailLength: 1,
-	pointDistance: .02,
-	step: 'fader',
+		width: 100,
+		height: 50,
+		padding: 10,
 
-	setup: function() {
-		this._.lineWidth = 18;
-	},/*
-	step: function(x, y, progress, color, alpha, xy) {
+		stepsPerFrame: 2,
+		trailLength: 1,
+		pointDistance: .03,
 
-		var cx = this.padding + 140,
-			cy = this.padding + 140,
-			_ = this._,
-			angle = (Math.PI/180) * (progress * 360);
-
-		_.beginPath();
-		_.moveTo(x, y);
-		_.lineTo(
-			(Math.cos(angle) * 130) + cx,
-			(Math.sin(angle) * 130) + cy
-		);
-		_.closePath();
-		_.stroke();
-
-	},*/
-	data: [
-	
-		['arc', 50, 50, 50, 90, -90, false],
-		['bezier', 50, 0, 200, 100, 100, 0, 150, 100],
-		['arc', 200, 50, 50, 90, -90, true],
-		['bezier', 200, 0, 50, 100, 150, 0, 100, 100]//,
+		strokeColor: '#FF7B24',
 		
-		//['arc', 140, 140, 80, 0, 360]
-	]
-});
+		step: 'fader',
 
-a.play();
+		multiplier: 2,
 
-document.body.onclick = function() {
-	a.stepsPerFrame += 1;
-};
+		setup: function() {
+			this._.lineWidth = 5;
+		},
 
-document.body.appendChild(a.canvas);
+		data: [
+		
+			['arc', 10, 10, 10, -270, -90],
+			['bezier', 10, 0, 40, 20, 20, 0, 30, 20],
+			['arc', 40, 10, 10, 90, -90],
+			['bezier', 40, 0, 10, 20, 30, 0, 20, 20]
+		]
+	},
+
+	{
+
+		width: 30,
+		height: 30,
+
+		stepsPerFrame: 2,
+		trailLength: .3,
+		pointDistance: .1,
+		padding: 10,
+
+		fillColor: '#D4FF00',
+		strokeColor: '#FFF',
+
+		setup: function() {
+			this._.lineWidth = 20;
+		},
+
+		data: [
+			['line', 0, 0, 30, 0],
+			['line', 30, 0, 30, 30],
+			['line', 30, 30, 0, 30],
+			['line', 0, 30, 0, 0]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 1,
+		trailLength: 1,
+		pointDistance: .025,
+
+		strokeColor: '#05E2FF',
+
+		fps: 20,
+
+		setup: function() {
+			this._.lineWidth = 2;
+		},
+		step: function(point, index) {
+
+			var cx = this.padding + 50,
+				cy = this.padding + 50,
+				_ = this._,
+				angle = (Math.PI/180) * (point.progress * 360);
+
+			this._.globalAlpha = Math.max(.5, this.alpha);
+
+			_.beginPath();
+			_.moveTo(point.x, point.y);
+			_.lineTo(
+				(Math.cos(angle) * 35) + cx,
+				(Math.sin(angle) * 35) + cy
+			);
+			_.closePath();
+			_.stroke();
+
+			_.beginPath();
+			_.moveTo(
+				(Math.cos(-angle) * 32) + cx,
+				(Math.sin(-angle) * 32) + cy
+			);
+			_.lineTo(
+				(Math.cos(-angle) * 27) + cx,
+				(Math.sin(-angle) * 27) + cy
+			);
+			_.closePath();
+			_.stroke();
+
+		},
+		data: [
+			['arc', 50, 50, 40, 0, 360]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 50,
+
+		stepsPerFrame: 1,
+		trailLength: 1,
+		pointDistance: .1,
+		fps: 15,
+		padding: 10,
+		//step: 'fader',
+
+		fillColor: '#FF2E82',
+
+		setup: function() {
+			this._.lineWidth = 20;
+		},
+
+		data: [
+			['line', 0, 20, 100, 20],
+			['line', 100, 20, 0, 20]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 7,
+		trailLength: .7,
+		pointDistance: .01,
+		fps: 30,
+
+		setup: function() {
+			this._.lineWidth = 10;
+		},
+
+		data: [
+			['line', 20, 70, 50, 20],
+			['line', 50, 20, 80, 70],
+			['line', 80, 70, 20, 70]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 4,
+		trailLength: 1,
+		pointDistance: .01,
+		fps: 25,
+
+		fillColor: '#FF7B24',
+
+		setup: function() {
+			this._.lineWidth = 10;
+		},
+
+		step: function(point, i, f) {
+
+			var progress = point.progress,
+				degAngle = 360 * progress,
+				angle = Math.PI/180 * degAngle,
+				angleB = Math.PI/180 * (degAngle - 180),
+				size = i*5;
+
+			this._.fillRect(
+				Math.cos(angle) * 25 + (50-size/2),
+				Math.sin(angle) * 15 + (50-size/2),
+				size,
+				size
+			);
+
+			this._.fillStyle = '#63D3FF';
+
+			this._.fillRect(
+				Math.cos(angleB) * 15 + (50-size/2),
+				Math.sin(angleB) * 25 + (50-size/2),
+				size,
+				size
+			);
+
+			if (point.progress == 1) {
+
+				this._.globalAlpha = f < .5 ? 1-f : f;
+
+				this._.fillStyle = '#EEE';
+
+				this._.beginPath();
+				this._.arc(50, 50, 5, 0, 360, 0);
+				this._.closePath();
+				this._.fill();
+
+			}
+
+
+		},
+
+		data: [
+			['line', 40, 10, 60, 90]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 3,
+		trailLength: 1,
+		pointDistance: .01,
+		fps: 30,
+		step: 'fader',
+
+		strokeColor: '#D4FF00',
+
+		setup: function() {
+			this._.lineWidth = 6;
+		},
+
+		data: [
+			['arc', 50, 50, 20, 360, 0]
+		]
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 1,
+		trailLength: 1,
+		pointDistance: .02,
+		fps: 30,
+
+		fillColor: '#05E2FF',
+
+		step: function(point, index) {
+			
+			this._.beginPath();
+			this._.moveTo(point.x, point.y);
+			this._.arc(point.x, point.y, index * 7, 0, Math.PI*2, false);
+			this._.closePath();
+			this._.fill();
+
+		},
+
+		data: [
+			['arc', 50, 50, 30, 0, 360]
+		]
+
+	},
+
+	{
+
+		width: 100,
+		height: 100,
+
+		stepsPerFrame: 1,
+		trailLength: 1,
+		pointDistance: .05,
+
+		strokeColor: '#FF2E82',
+
+		fps: 20,
+
+		setup: function() {
+			this._.lineWidth = 4;
+		},
+		step: function(point, index) {
+
+			var cx = this.padding + 50,
+				cy = this.padding + 50,
+				_ = this._,
+				angle = (Math.PI/180) * (point.progress * 360),
+				innerRadius = index === 1 ? 10 : 25;
+
+			_.beginPath();
+			_.moveTo(point.x, point.y);
+			_.lineTo(
+				(Math.cos(angle) * innerRadius) + cx,
+				(Math.sin(angle) * innerRadius) + cy
+			);
+			_.closePath();
+			_.stroke();
+
+		},
+		data: [
+			['arc', 50, 50, 40, 0, 360]
+		]
+	}
+
+];
+
+var d, a, container = document.getElementById('in');
+
+
+for (var i = -1, l = loaders.length; ++i < l;) {
+	
+	d = document.createElement('div');
+	d.className = 'l';
+
+	a = new Sonic(loaders[i]);
+
+	d.appendChild(a.canvas);
+	container.appendChild(d);
+
+	a.canvas.style.marginTop = (150 - a.fullHeight) / 2 + 'px';
+	a.canvas.style.marginLeft = (150 - a.fullWidth) / 2 + 'px';
+
+	a.play();
+
+}
 
 </script> 
 
