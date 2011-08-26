@@ -38,6 +38,20 @@ Drawing methods are specified in the `path` array like so:
  * `['bezier', startX, startY, endX, endY, cp1x, cp1y, cp2x, cp2y]`
  * `['arc', cx, cy, radius, startDegree, endDegree]` (degrees, not radians!)
 
+### Options
+
+Options that you can pass to `new Sonic({...})` include:
+
+ * `path`: An array which defines the path taken by sonic. Look at the square example above. Each array item is an array with the format `[methodName, arguments...]`, with the available methods specified above (`line`, `bezier` and `arc`).
+ * `width`: The pixel width of the canvas (note: not including padding)
+ * `height`: The pixel height of the canvas (note: not including padding)
+ * `padding` (default: `0`): The pixel padding.
+ * `fps` (default: `25`): How many frames per second. More fps means smoother animation and sonic will progress through the specified path quicker. Less frames means the opposite. There shouldn't be much need to change this.
+ * `stepsPerFrame` (default: `1`): This integer specifies how many steps of an animation should occur on each frame.
+ * `pointDistance` (default: `.05`): The distance between points (0..1) in each path (that is, each sub-path under the main path). If you draw a line, and set the pointDistance to 0.1, then there will be ten steps in the animation (ten points). 
+ * `trailLength` (default: `1`): The length of sonic's trail (0..1). A length of **one** means that it's like a snake trying to eat its own tail.
+ * `step` (default: `"square"`): A function OR a name of a function found in `Sonic.stepMethods`. This function will be called on every step of the animation. See below (under "more control") for more info on this function.
+ * `domClass` (default: `"sonic"`): A class to be applied to the `<canvas>` element.
 
 ### More control:
 
