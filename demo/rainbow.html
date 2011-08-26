@@ -1,0 +1,77 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Sonic</title>
+
+<style>
+
+</style>
+
+<body>
+
+<script src="../src/sonic.js"></script>
+<script>
+
+var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+
+var square = new Sonic({
+
+    width: 100,
+    height: 100,
+
+    pointDistance: .005,
+    trailLength: .9,
+    stepsPerFrame: 5,
+
+    setup: function() {
+    	this._.lineWidth = 5;
+    },
+
+    step: function(point, index, frame) {
+
+		this._.beginPath();
+
+		var color, prev, x, y, angle,
+			radius = 45,
+			cx = 50,
+			cy = 50;
+
+		angle = Math.PI/180 * (point.progress * 360);
+
+		for (var i = -1, l = colors.length; ++i < l;) {
+
+			color = colors[i];
+			prev = this['_' + color];
+
+			x = Math.cos(angle) * radius + cx;
+			y = Math.sin(angle) * radius + cy;
+
+			this._.fillStyle = color;
+			this._.strokeStyle = color;
+
+			this._.beginPath();
+			prev && this._.moveTo(prev.x, prev.y);
+			this._.lineTo(x, y);
+			this._.closePath();
+			this._.stroke();
+			this['_' + color] = {x:x,y:y};
+
+			radius -= 5;
+
+		}
+
+
+    },
+
+    path: [
+        ['arc', 100, 100, 90, 0, 360]
+    ]
+
+});
+
+square.play();
+
+document.body.appendChild(square.canvas);
+
+</script> 
+
+</body>
