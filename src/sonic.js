@@ -1,6 +1,14 @@
 /*
- * Sonic
- */
+ * Sonic 0.1
+ * --
+ * https://github.com/jamespadolsey/Sonic
+ * --
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details. */ 
+
 (function(){
 
 	var emptyFn = function(){};
@@ -201,13 +209,14 @@
 				return;
 			}
 
-			this._.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			this._.clearRect(0, 0, this.fullWidth, this.fullHeight);
 			
 			var points = this.points,
 				pointsLength = points.length,
-				point, index;
-
-			var pd = this.pointDistance;
+				pd = this.pointDistance,
+				point,
+				index,
+				frameD;
 
 			this._setup();
 
@@ -217,28 +226,27 @@
 
 				point = points[index] || points[index - pointsLength];
 
-				if (!point) {
-					console.log('POINT NOT FOUND');
-					continue;
-				}
+				if (!point) continue;
 
 				this.alpha = Math.round(1000*(i/(l-1)))/1000;
-
-				this._preStep();
 
 				this._.globalAlpha = this.alpha;
 
 				this._.fillStyle = this.fillColor;
 				this._.strokeStyle = this.strokeColor;
 
-				this.stepMethod(point, i/(l-1), frame/(this.points.length-1), this.color, this.alpha);
+				frameD = frame/(this.points.length-1);
+				indexD = i/(l-1);
+
+				this._preStep(point, indexD, frameD);
+				this.stepMethod(point, indexD, frameD);
 
 			} 
 
 			this._teardown();
 
 			this.imageData[frame] = (
-				this._.getImageData(0, 0, this.canvas.width, this.canvas.height)
+				this._.getImageData(0, 0, this.fullWidth, this.fullWidth)
 			);
 
 			return true;
@@ -249,7 +257,7 @@
 			
 			if (!this.prep(this.frame)) {
 
-				this._.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				this._.clearRect(0, 0, this.fullWidth, this.fullWidth);
 
 				this._.putImageData(
 					this.imageData[this.frame],
@@ -273,15 +281,21 @@
 		},
 
 		play: function() {
+
 			this.stopped = false;
+
 			var hoc = this;
+
 			this.timer = setInterval(function(){
 				hoc.draw();
-			}, (1000 / this.fps));
+			}, 1000 / this.fps);
+
 		},
 		stop: function() {
+
 			this.stopped = true;
 			this.timer && clearInterval(this.timer);
+
 		}
 	};
 

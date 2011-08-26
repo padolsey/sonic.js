@@ -61,7 +61,7 @@ Custom shapes can be drawn with the help of `step`:
 
 	new Sonic({
 		//...
-		step: function(point, index, frame, color, alpha) {
+		step: function(point, index, frame) {
 
 			// point is an object { x: n, y: n, progress: n}
 			// point.progress is progress of point (0..1)
@@ -78,6 +78,10 @@ Custom shapes can be drawn with the help of `step`:
 			this._.arc(point.x, point.y, 5, 0, Math.PI*2, false);
 			this._.closePath();
 			this._.fill();
+
+			// this == Sonic instance
+			// this._ == canvas context
+			// this.alpha = alpha opacity
 
 		}
 	});
