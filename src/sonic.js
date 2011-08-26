@@ -7,7 +7,7 @@
 
 	function Sonic(d) {
 
-		this.data = d.data;
+		this.data = d.path || d.data;
 		this.imageData = [];
 
 		this.multiplier = d.multiplier || 1;
