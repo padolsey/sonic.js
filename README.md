@@ -24,7 +24,11 @@ E.g. a square:
 
 Square demo: http://padolsey.net/p/Sonic/repo/demo/square.html
 
-Drawing methods are specified in `path` like so:
+### How does it work?
+
+Sonic works by drawing a shape (by default a square, `fillRect`) at tiny intervals along a pre-defined path. You define the path via the `path` option:
+
+Drawing methods are specified in the `path` array like so:
 
     [methodName, arguments...]
 
@@ -34,10 +38,6 @@ Drawing methods are specified in `path` like so:
  * `['bezier', startX, startY, endX, endY, cp1x, cp1y, cp2x, cp2y]`
  * `['arc', cx, cy, radius, startDegree, endDegree]` (degrees, not radians!)
 
-
-### How does it work?
-
-Sonic works by drawing a shape (by default a square, `fillRect`) at tiny intervals along a pre-defined path. You define the path via the `path` option.
 
 ### More control:
 
@@ -55,10 +55,18 @@ Custom shapes can be drawn with the help of `step`:
 
 			// frame is the current frame (0..1) 
 
+			// E.g. let's draw a tiny circle:
+
+			this._.beginPath();
+			this._.moveTo(point.x, point.y);
+			this._.arc(point.x, point.y, 5, 0, Math.PI*2, false);
+			this._.closePath();
+			this._.fill();
+
 		}
 	});
 
- For more demos, see: https://github.com/jamespadolsey/Sonic/blob/master/demo/demo.html
+For more demos, see: https://github.com/jamespadolsey/Sonic/blob/master/demo/demo.html
 
 ### FAQ:
 
