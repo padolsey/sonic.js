@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Sonic</title>
+
+<style>
+
+</style>
+
+<body>
+
+<script src="../src/sonic.js"></script>
+<script>
+
+var square = new Sonic({
+
+    width: 50,
+    height: 50,
+    padding: 50,
+
+    strokeColor: '#000',
+
+    pointDistance: .01,
+    stepsPerFrame: 3,
+    trailLength: .7,
+
+    step: 'fader',
+    
+    setup: function() {
+    	this._.lineWidth = 5;
+    },
+
+    path: [
+        ['arc', 25, 25, 25, 0, 360]
+    ]
+
+});
+
+square.play();
+
+document.body.appendChild(square.canvas);
+
+</script> 
+
+</body>
