@@ -11,7 +11,7 @@
 <script src="../src/sonic.js"></script>
 <script>
 
-var square = new Sonic({
+var circle = new Sonic({
 
     width: 50,
     height: 50,
@@ -24,7 +24,7 @@ var square = new Sonic({
     trailLength: .7,
 
     step: 'fader',
-    
+
     setup: function() {
     	this._.lineWidth = 5;
     },
@@ -35,9 +35,9 @@ var square = new Sonic({
 
 });
 
-square.play();
+circle.play();
 
-document.body.appendChild(square.canvas);
+document.body.appendChild(circle.canvas);
 
 </script> 
 
