@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Sonic</title>
+
+<style>
+
+</style>
+
+<body>
+
+<script src="../src/sonic.js"></script>
+<script>
+
+var square = new Sonic({
+    width: 100,
+    height: 100,
+    fillColor: '#000',
+    data: [
+        ['line', 10, 10, 90, 10],
+        ['line', 90, 10, 90, 90],
+        ['line', 90, 90, 10, 90],
+        ['line', 10, 90, 10, 10]
+    ]
+});
+
+square.play();
+
+document.body.appendChild(square.canvas);
+
+</script> 
+
+</body>

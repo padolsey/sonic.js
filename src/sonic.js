@@ -76,7 +76,7 @@
 		    ]
 
 		},
-		arc: function(t, cx, cy, radius, start, end, anti) {
+		arc: function(t, cx, cy, radius, start, end) {
 
 		    var point = (end - start) * t + start;
 
