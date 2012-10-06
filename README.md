@@ -94,6 +94,10 @@ For more demos, see: https://github.com/jamespadolsey/Sonic/blob/master/demo/dem
 
 No, not really. It only has to run the calculations (i.e. functions for `line`, `arc`, and `bezier`) for one loop, then Sonic caches the produced image and simply calls `putImageData` on every subsequent frame. It's pretty quick.
 
+#### Older browsers!?
+
+Cadell Christo (cadc) has made [sonicGIF](https://github.com/cadc/SonicGIF), which generares GIFs for you to use in older browsers.
+
 #### There's no `anticlockwise` arg for `arc`, why?
 
 It's not needed. You can make an arc progress in an anti-clockwise direction by going from, `360` to `0`, instead of `0` to `360`.
