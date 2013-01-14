@@ -7,7 +7,7 @@
  * the extent permitted by applicable law. You can redistribute it
  * and/or modify it under the terms of the Do What The Fuck You Want
  * To Public License, Version 2, as published by Sam Hocevar. See
- * http://sam.zoy.org/wtfpl/COPYING for more details. */ 
+ * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
 (function(){
 
@@ -67,7 +67,7 @@
 
 	var pathMethods = Sonic.pathMethods = {
 		bezier: function(t, p0x, p0y, p1x, p1y, c0x, c0y, c1x, c1y) {
-			
+
 		    t = 1-t;
 
 		    var i = 1-t,
@@ -108,7 +108,7 @@
 	};
 
 	var stepMethods = Sonic.stepMethods = {
-		
+
 		square: function(point, i, f, color, alpha) {
 			this._.fillRect(point.x - 3, point.y - 3, 6, 6);
 		},
@@ -180,7 +180,7 @@
 				args.unshift(0);
 
 				for (var r, pd = this.pointDistance, t = pd; t <= 1; t += pd) {
-					
+
 					// Avoid crap like 0.15000000000000002
 					t = Math.round(t*1/pd) / (1/pd);
 
@@ -210,12 +210,13 @@
 			}
 
 			this._.clearRect(0, 0, this.fullWidth, this.fullHeight);
-			
+
 			var points = this.points,
 				pointsLength = points.length,
 				pd = this.pointDistance,
 				point,
 				index,
+				indexD,
 				frameD;
 
 			this._setup();
@@ -241,7 +242,7 @@
 				this._preStep(point, indexD, frameD);
 				this.stepMethod(point, indexD, frameD);
 
-			} 
+			}
 
 			this._teardown();
 
@@ -254,7 +255,7 @@
 		},
 
 		draw: function() {
-			
+
 			if (!this.prep(this.frame)) {
 
 				this._.clearRect(0, 0, this.fullWidth, this.fullWidth);
@@ -271,7 +272,7 @@
 		},
 
 		iterateFrame: function() {
-			
+
 			this.frame += this.stepsPerFrame;
 
 			if (this.frame >= this.points.length) {
