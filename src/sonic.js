@@ -1,7 +1,7 @@
 /*
  * Sonic 0.1
  * --
- * https://github.com/jamespadolsey/Sonic
+ * https://github.com/padolsey/Sonic
  * --
  * This program is free software. It comes without any warranty, to
  * the extent permitted by applicable law. You can redistribute it
