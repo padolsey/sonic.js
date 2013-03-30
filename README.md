@@ -1,6 +1,7 @@
 ## Sonic.js
 
-[See the live demo!](http://padolsey.net/p/Sonic/repo/demo/demo.html)
+ * **[See some examples!](http://padolsey.net/p/Sonic/repo/demo/demo.html)**
+ * **[Create your own with Sonic Creator!](http://padolsey.github.com/sonic-creator/)**
 
 Sonic is a tool that you can use to create spinny-loady-thingies on the fly. It's best for shapes that loop.
 
