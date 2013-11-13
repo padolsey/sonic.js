@@ -43,7 +43,7 @@
 		this._teardown = d.teardown || emptyFn;
 		this._preStep = d.preStep || emptyFn;
 
-        this.pixelRatio = d.pixelRatio || null;
+		this.pixelRatio = d.pixelRatio || null;
 
 		this.width = d.width;
 		this.height = d.height;
@@ -138,18 +138,18 @@
 
 	Sonic.prototype = {
 
-        calculatePixelRatio: function(){
+		calculatePixelRatio: function(){
 
-            var devicePixelRatio = window.devicePixelRatio || 1;
-            var backingStoreRatio = this._.webkitBackingStorePixelRatio
-                || this._.mozBackingStorePixelRatio
-                || this._.msBackingStorePixelRatio
-                || this._.oBackingStorePixelRatio
-                || this._.backingStorePixelRatio
-                || 1;
+			var devicePixelRatio = window.devicePixelRatio || 1;
+			var backingStoreRatio = this._.webkitBackingStorePixelRatio
+					|| this._.mozBackingStorePixelRatio
+					|| this._.msBackingStorePixelRatio
+					|| this._.oBackingStorePixelRatio
+					|| this._.backingStorePixelRatio
+					|| 1;
 
-            return devicePixelRatio / backingStoreRatio;
-        },
+			return devicePixelRatio / backingStoreRatio;
+		},
 
 		setup: function() {
 
@@ -162,38 +162,31 @@
 			this.canvas = document.createElement('canvas');
 			this._ = this.canvas.getContext('2d');
 
-            if(this.pixelRatio == null){
-                this.pixelRatio = this.calculatePixelRatio();
-            }
+			if(this.pixelRatio == null){
+				this.pixelRatio = this.calculatePixelRatio();
+			}
 
 			this.canvas.className = this.domClass;
 
+			if(this.pixelRatio != 1){
 
-            if(this.pixelRatio != 1){
+				this.canvas.style.height = this.fullHeight + 'px';
+				this.canvas.style.width = this.fullWidth + 'px';
 
+				this.fullHeight *= this.pixelRatio;
+				this.fullWidth  *= this.pixelRatio;
 
-                this.canvas.style.height = this.fullHeight + 'px';
-                this.canvas.style.width = this.fullWidth + 'px';
+				this.canvas.height = this.fullHeight;
+				this.canvas.width = this.fullWidth;
 
-                this.fullHeight *= this.pixelRatio;
-                this.fullWidth  *= this.pixelRatio;
+				this._.scale(this.pixelRatio, this.pixelRatio);
 
-                this.canvas.height = this.fullHeight;
-                this.canvas.width = this.fullWidth;
+			}   else{
 
-                this._.scale(this.pixelRatio, this.pixelRatio);
+				this.canvas.height = this.fullHeight;
+				this.canvas.width = this.fullWidth;
 
-            }   else{
-
-                this.canvas.height = this.fullHeight;
-                this.canvas.width = this.fullWidth;
-
-            }
-
-
-
-
-
+			}
 
 			this.points = [];
 
