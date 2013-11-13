@@ -43,11 +43,13 @@
 		this._teardown = d.teardown || emptyFn;
 		this._preStep = d.preStep || emptyFn;
 
+        this.pixelRatio = d.pixelRatio || null;
+
 		this.width = d.width;
 		this.height = d.height;
 
-		this.fullWidth = this.width + 2*this.padding;
-		this.fullHeight = this.height + 2*this.padding;
+		this.fullWidth = this.width + 2 * this.padding;
+		this.fullHeight = this.height + 2 * this.padding;
 
 		this.domClass = d.domClass || 'sonic';
 
@@ -135,6 +137,20 @@
 	}
 
 	Sonic.prototype = {
+
+        calculatePixelRatio: function(){
+
+            var devicePixelRatio = window.devicePixelRatio || 1;
+            var backingStoreRatio = this._.webkitBackingStorePixelRatio
+                || this._.mozBackingStorePixelRatio
+                || this._.msBackingStorePixelRatio
+                || this._.oBackingStorePixelRatio
+                || this._.backingStorePixelRatio
+                || 1;
+
+            return devicePixelRatio / backingStoreRatio;
+        },
+
 		setup: function() {
 
 			var args,
@@ -146,10 +162,38 @@
 			this.canvas = document.createElement('canvas');
 			this._ = this.canvas.getContext('2d');
 
+            if(this.pixelRatio == null){
+                this.pixelRatio = this.calculatePixelRatio();
+            }
+
 			this.canvas.className = this.domClass;
 
-			this.canvas.height = this.fullHeight;
-			this.canvas.width = this.fullWidth;
+
+            if(this.pixelRatio != 1){
+
+
+                this.canvas.style.height = this.fullHeight + 'px';
+                this.canvas.style.width = this.fullWidth + 'px';
+
+                this.fullHeight *= this.pixelRatio;
+                this.fullWidth  *= this.pixelRatio;
+
+                this.canvas.height = this.fullHeight;
+                this.canvas.width = this.fullWidth;
+
+                this._.scale(this.pixelRatio, this.pixelRatio);
+
+            }   else{
+
+                this.canvas.height = this.fullHeight;
+                this.canvas.width = this.fullWidth;
+
+            }
+
+
+
+
+
 
 			this.points = [];
 
