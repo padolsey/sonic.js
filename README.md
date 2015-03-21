@@ -87,7 +87,7 @@ Custom shapes can be drawn with the help of `step`:
 		}
 	});
 
-For more demos, see: https://github.com/jamespadolsey/Sonic/blob/master/demo/demo.html
+For more demos, see: https://github.com/padolsey/sonic.js/blob/master/demo/demo.html
 
 ### FAQ:
 
