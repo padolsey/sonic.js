@@ -35,7 +35,11 @@ div.l {
 	position: relative;
 }
 .sonic {
-	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
 }
 canvas { display: block; }
 </style>
@@ -196,6 +200,7 @@ var loaders = [
 		trailLength: .7,
 		pointDistance: .01,
 		fps: 30,
+		fillColor: 'white',
 
 		setup: function() {
 			this._.lineWidth = 10;
@@ -362,7 +367,6 @@ var loaders = [
 
 var d, a, container = document.getElementById('in');
 
-
 for (var i = -1, l = loaders.length; ++i < l;) {
 	
 	d = document.createElement('div');
@@ -372,9 +376,6 @@ for (var i = -1, l = loaders.length; ++i < l;) {
 
 	d.appendChild(a.canvas);
 	container.appendChild(d);
-
-	a.canvas.style.marginTop = (150 - a.fullHeight) / 2 + 'px';
-	a.canvas.style.marginLeft = (150 - a.fullWidth) / 2 + 'px';
 
 	a.play();
 
