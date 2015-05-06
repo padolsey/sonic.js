@@ -1,0 +1,19 @@
+{
+  "name": "sonic.js",
+  "version": "0.2.1",
+  "description": "Sonic is a tiny class you can use to generate loading indicators",
+  "main": "src/sonic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/padolsey/sonic.js.git"
+  },
+  "author": "",
+  "license": "Unlicense (Public Domain)",
+  "bugs": {
+    "url": "https://github.com/padolsey/sonic.js/issues"
+  },
+  "homepage": "https://github.com/padolsey/sonic.js"
+}
