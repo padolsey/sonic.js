@@ -7,21 +7,23 @@ Sonic is a tool that you can use to create spinny-loady-thingies on the fly. It'
 
 E.g. a square:
 
-    var square = new Sonic({
-        width: 100,
-        height: 100,
-        fillColor: '#000',
-        path: [
-            ['line', 10, 10, 90, 10],
-            ['line', 90, 10, 90, 90],
-            ['line', 90, 90, 10, 90],
-            ['line', 10, 90, 10, 10]
-        ]
-    });
+```js
+var square = new Sonic({
+    width: 100,
+    height: 100,
+    fillColor: '#000',
+    path: [
+        ['line', 10, 10, 90, 10],
+        ['line', 90, 10, 90, 90],
+        ['line', 90, 90, 10, 90],
+        ['line', 10, 90, 10, 10]
+    ]
+});
 
-    square.play();
+square.play();
 
-    document.body.appendChild(square.canvas);
+document.body.appendChild(square.canvas);
+```
 
 Square demo: http://padolsey.net/p/Sonic/repo/demo/square.html
 
@@ -60,32 +62,34 @@ Options that you can pass to `new Sonic({...})` include:
 
 Custom shapes can be drawn with the help of `step`:
 
-	new Sonic({
-		//...
-		step: function(point, index, frame) {
+```js
+new Sonic({
+	//...
+	step: function(point, index, frame) {
 
-			// point is an object { x: n, y: n, progress: n}
-			// point.progress is progress of point (0..1)
-			// relative to other points in that single draw
+		// point is an object { x: n, y: n, progress: n}
+		// point.progress is progress of point (0..1)
+		// relative to other points in that single draw
 
-			// index is the progress relative to entire shape
+		// index is the progress relative to entire shape
 
-			// frame is the current frame (0..1) 
+		// frame is the current frame (0..1) 
 
-			// E.g. let's draw a tiny circle:
+		// E.g. let's draw a tiny circle:
 
-			this._.beginPath();
-			this._.moveTo(point.x, point.y);
-			this._.arc(point.x, point.y, 5, 0, Math.PI*2, false);
-			this._.closePath();
-			this._.fill();
+		this._.beginPath();
+		this._.moveTo(point.x, point.y);
+		this._.arc(point.x, point.y, 5, 0, Math.PI*2, false);
+		this._.closePath();
+		this._.fill();
 
-			// this == Sonic instance
-			// this._ == canvas context
-			// this.alpha = alpha opacity
+		// this == Sonic instance
+		// this._ == canvas context
+		// this.alpha = alpha opacity
 
-		}
-	});
+	}
+});
+```
 
 For more demos, see: https://github.com/padolsey/sonic.js/blob/master/demo/demo.html
 

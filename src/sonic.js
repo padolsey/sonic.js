@@ -1,5 +1,5 @@
 /*
- * Sonic 0.2
+ * Sonic 0.2.1
  * --
  * https://github.com/padolsey/Sonic
  * --
