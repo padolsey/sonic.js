@@ -10,8 +10,8 @@
     "type": "git",
     "url": "https://github.com/padolsey/sonic.js.git"
   },
-  "author": "",
-  "license": "Unlicense (Public Domain)",
+  "author": "James Padolsey",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/padolsey/sonic.js/issues"
   },
